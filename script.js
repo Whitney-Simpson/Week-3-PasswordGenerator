@@ -1,8 +1,13 @@
 // Characters to be used in password generator
-var lowerCaseChar = ['a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z'];
-var upperCaseChar = ['A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'];
-var numberChar = ['0,1,2,3,4,5,6,7,8,9'];
-var symbolChar = [',",!,,#,$, %,&,(,),*,+,-,.,?,:,;,<,=,>,?,@,[,\,],^,_,`,{,|,},~'];
+var lowerCaseChar ="abcdefghijklmnopqrstuvwxyz";
+var lowerarray = lowerCaseChar.split("");
+var upperarray = lowerCaseChar.toUpperCase().split("");
+var numberChar = "0123456789";
+var numberarray = numberChar.split("");
+var symbolChar = "!@#$%^&*()_+=-";
+var symbolarray = symbolChar.split("");
+
+
 
 var generateButton = document.getElementById('generateBtn');
 generateButton.addEventListener('click', writePassword);
@@ -17,7 +22,7 @@ function writePassword() {
 
 //Series of prompts for user to use for password criteria
 function generatePassword() {
-  var passwordLength = prompt("Enter the number of characters wanted? It must be between 8 - 128");
+  var passwordLength = parseInt(prompt("Enter the number of characters wanted? It must be between 8 - 128"));
 
   var promptnumbers = confirm("Would you like numbers in your password?");
 
@@ -27,13 +32,6 @@ function generatePassword() {
 
   var promptspecial = confirm("Would you like special characters in your password?");
 
-
-  var minCount = 0;
-
-  var minNumbers = "";
-  var minLowerCases = "";
-  var minUpperCases = "";
-  var minSpecialChar = "";
 
   //Functions that create the password
 
@@ -53,46 +51,40 @@ function generatePassword() {
   ];
 
   var passwordGenerator = "";
-  var items = "";
-
-  //Applies all prompts selected
+  var items = []
   if (promptnumbers === true) {
-    items += numberChar;
-    minNumbers = functionarrays[0];
-    passwordGenerator += minNumbers();
-    minCount++;
+    items = items.concat(numberarray);
   }
-
   if (promptlowercase === true) {
-    items += lowerCaseChar;
-    promptlowercase = functionarrays[1];
-    passwordGenerator += minLowerCases();
-    minCount++;
+    items = items.concat(lowerarray);
   }
-
+  
   if (promptuppercase === true) {
-    items += upperCaseChar
-    uppercase = functionarrays[2];
-    passwordGenerator += minUpperCases();
-    minCount++;
+    items = items.concat(upperarray)
   }
-
+  
   if (promptspecial === true) {
-    items += symbolChar;
-    minSpecialChar = functionarrays[3];
-    passwordGenerator += minSpecialChar();
-    minCount++;
+    items = items.concat(symbolarray);
   }
-
+  
+  console.log(items);
+  if (items.length === 0) {
+    alert("Must choose at least one character type");
+    return "Please try again"
+  }
  //
+ if (isNaN(passwordLength)){
+  alert("Must select a number between 8 and 128");
+  return "Please try again"
+ }
 
   //Randomizing 
-  for (let i = 0; i < (parseInt(passwordLength) - minCount); i++) {
+  for (let i = 0; i < passwordLength; i++) {
     var randomChar = items[Math.floor(Math.random() *items.length)];
 
     passwordGenerator += randomChar;
   }
-
+// return "Test"
   return passwordGenerator;
 }
 ;
